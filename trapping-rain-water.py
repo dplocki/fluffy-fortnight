@@ -1,9 +1,15 @@
 class Solution:
     def trap(self, heights: List[int]) -> int:
-        maxium_height = max(heights)
+        heights_length = len(heights)
 
         return sum(
-            w2 - w1 - 1
-            for level in range(maxium_height, 0, -1)
-            for w1, w2 in pairwise(i for i, w in enumerate(heights) if w >= level)
+            max(min(left_height, right_height) - hight, 0)
+            for left_height, right_height, hight in (
+                (
+                    max(heights[:index]) if index > 0 else 0,
+                    max(heights[index:]) if index < heights_length else 0,
+                    heights[index]
+                )
+                for index in range(heights_length)
+            )
         )
