@@ -12,7 +12,7 @@ class Solution:
         for index in range(string_len - whole_substrings + 1):
             curent_words_as_hash = words_as_hash.copy()
 
-            for sub_words_index in range(word_len):
+            for sub_words_index in range(len(words)):
                 start = index + word_len * sub_words_index
                 sub_word = s[start:start + word_len]
 
