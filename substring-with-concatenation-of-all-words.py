@@ -7,7 +7,7 @@ class Solution:
 
         words_as_hash = {}
         for word in words:
-            words_as_hash[word] = words_as_hash.get(word, 1)
+            words_as_hash[word] = words_as_hash.get(word, 0) + 1
 
         for index in range(string_len - whole_substrings + 1):
             curent_words_as_hash = words_as_hash.copy()
