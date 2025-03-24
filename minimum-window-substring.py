@@ -5,31 +5,18 @@ class Solution:
         substring_letters =  self.word_to_hash(t)
 
         results = []
-        left, right = 0, 0
+        left, right = 0, -1
 
         window_letters = {}
-        while True:
-            while right < string_length:
-                window_letters[s[right]] = window_letters.get(s[right], 0) + 1
-                if self.check(window_letters, substring_letters):
-                    break
-                else:
-                    right += 1
 
-            if right == string_length:
-                break
-            else:
-                results.append((left, right))
-
-            while left < right:
-                window_letters[s[left]] = window_letters[s[left]] - 1
-                if not self.check(window_letters, substring_letters):
-                    break
-                else:
+        for right, character in enumerate(s):
+            window_letters[character] = window_letters.get(character, 0) + 1
+            if self.check(window_letters, substring_letters):
+                while self.check(window_letters, substring_letters):
+                    window_letters[s[left]] = window_letters[s[left]] - 1
                     left += 1
 
-            if left < right:
-                results.append((left, right))
+                results.append((left - 1, right + 1))
 
         if not results:
             return ''
