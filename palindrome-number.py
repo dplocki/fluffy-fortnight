@@ -4,7 +4,7 @@ class Solution:
         length = len(x_as_str)
         middle = length // 2
 
-        for n in range(0, middle):
+        for n in range(middle):
             if x_as_str[n] != x_as_str[length - n - 1]:
                 return False
 
