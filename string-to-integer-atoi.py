@@ -51,4 +51,7 @@ class Solution:
             result += 10 ** multiplayer * digit
             multiplayer -= 1
 
+        if result > (2**31 - 1):
+            return sign * (2**31 - 1) if sign == 1 else -2**31
+
         return sign * result
