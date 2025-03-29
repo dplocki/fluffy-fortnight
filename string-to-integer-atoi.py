@@ -1,6 +1,6 @@
 class Solution:
     def myAtoi(self, s: str) -> int:
-        sign = 1
+        sign = None
         digits = []       
    
         begin_string = True
@@ -8,7 +8,17 @@ class Solution:
             if character == ' ' and begin_string:
                 pass
             elif character == '-' and begin_string:
+                if sign != None:
+                    return 0
+
+                begin_string = False
                 sign = -1
+            elif character == '+' and begin_string:
+                if sign != None:
+                    return 0
+
+                begin_string = False
+                sign = 1
             elif character == '0':
                 begin_string = False
                 digits.append(0)
@@ -44,6 +54,7 @@ class Solution:
             else:
                 break
 
+        sign = sign or 1
         multiplayer = len(digits) -1
         result = 0
 
