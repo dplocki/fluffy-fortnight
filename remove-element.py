@@ -1,8 +1,5 @@
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        if not nums:
-            return 0
-            
         left = 0
         right = len(nums) - 1
         
