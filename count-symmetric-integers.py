@@ -1,32 +1,18 @@
 class Solution:
     def countSymmetricIntegers(self, low: int, high: int) -> int:
-        result = 0
-        current = low
-        while current <= high:
-            if current < 10:
-                current = 10
-                continue
+        return sum(self.is_symmetric(n) for n in range(low, high + 1))
 
-            if 10 <= current < 100:
-                if current % 11 == 0:
-                    result += 1
+    def is_symmetric(self, number: int) -> int:
+        digits = tuple(self.digits(number))
+        digits_count = len(digits)
+        if digits_count & 1:
+            return False
 
-                current += 1
-                continue
-                
-            if 100 <= current < 1000:
-                current = 1000
-                continue
+        middle = digits_count // 2
 
-            if 1000 <= current < 10000:
-                d1 = current // 1000
-                d2 = (current // 100) % 10
-                d3 = (current // 10) % 10
-                d4 = current % 10
+        return sum(digits[middle:]) == sum(digits[:middle])
 
-                if d1 + d2 == d3 + d4:
-                    result += 1
-
-                current += 1
-
-        return result
+    def digits(self, number):
+        while number:
+            yield number % 10
+            number //= 10
