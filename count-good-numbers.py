@@ -1,11 +1,7 @@
 class Solution:
     def countGoodNumbers(self, n: int) -> int:
-        total = 1
+        mod = 10**9 + 7
+        even_indexes = (n + 1) // 2
+        odd_indexes = n // 2
 
-        for index in range(n):
-            if index % 2 == 0:
-                total *= 5
-            else:
-                total *= 4
-        
-        return total % (10**9 + 7)
+        return pow(5, even_indexes, mod) * pow(4, odd_indexes, mod) % mod
