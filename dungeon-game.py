@@ -1,24 +1,13 @@
 class Solution:
     def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:
         max_row, max_column = len(dungeon), len(dungeon[0])
-        end_position = max_row - 1, max_column - 1
-        possibilities = [(0, 0, 0, 0)]
-        result = []
+        results = {
+            (max_row, max_column - 1): 1,
+            (max_row - 1, max_column): 1
+        }
 
-        while possibilities:
-            row, column, health_delta, required_health = possibilities.pop()
+        for row in range(max_row - 1, -1, -1):
+            for column in range(max_column - 1, -1, -1):
+                results[row, column] = max(1, min(results.get((row + 1, column), inf), results.get((row, column + 1), inf)) - dungeon[row][column])
 
-            health_delta += dungeon[row][column]
-            required_health = min(required_health, health_delta)
-
-            if (row, column) == end_position:
-                result.append(abs(required_health) + 1 if required_health else 1)
-                continue
-
-            if row < max_row - 1:
-                possibilities.append((row + 1, column, health_delta, required_health))
-
-            if column < max_column - 1:
-                possibilities.append((row, column + 1, health_delta, required_health))
-
-        return min(result)
+        return results[0, 0]
