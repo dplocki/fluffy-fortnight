@@ -1,12 +1,11 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        last_index = len(nums) - 1
-        result = { last_index: True }
+        maxium_reach = 0
 
-        for index in range(last_index - 1, -1, -1):
-            result[index] = any(
-                result.get(i + 1, False)
-                for i in range(index, index + nums[index])
-            )
+        for index, num in enumerate(nums):
+            if index > maxium_reach:
+                return False
+            
+            maxium_reach = max(maxium_reach, index + num)
 
-        return result.get(0, False)
+        return True
