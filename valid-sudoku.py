@@ -1,8 +1,8 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        rows = { i: set() for i in range(9) }
-        columns = { i: set() for i in range(9) }
-        boxes = { i: set() for i in range(9) }
+        rows = [set() for _ in range(9)]
+        columns = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
 
         for row_index in range(9):
             for column_index in range(9):
@@ -28,4 +28,3 @@ class Solution:
                 boxes[box_index].add(value)
 
         return True
-
