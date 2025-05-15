@@ -4,22 +4,22 @@ class Solution:
 
         for _ in range(1, n):
             result = ''.join(
-                f'{len(token)}{token[0]}'
-                for token in self.split_into_tokens(result))
+                f'{count}{digit}'
+                for digit, count in self.split_into_tokens(result))
 
         return result
 
     def split_into_tokens(self, n: str):
         prev = n[0]
-        group = ''
+        group_size = 0
 
         for digit in n:
             if digit == prev:
-                group += digit
+                group_size += 1
             else:
-                yield group
-                group = digit
+                yield prev, group_size
+                group_size = 1
 
             prev = digit
 
-        yield group
+        yield prev, group_size
