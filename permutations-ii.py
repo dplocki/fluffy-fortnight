@@ -2,9 +2,8 @@ class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         nums_size = len(nums)
         nums.sort()
-        used = [False] * nums_size
 
-        def internal(current: List[int]):
+        def internal(current: List[int]=[], used: List[bool]=[False] * nums_size):
             if len(current) == nums_size:
                 yield tuple(current)
                 return
@@ -21,4 +20,4 @@ class Solution:
                 current.pop()
                 used[index] = False
 
-        return list(internal([]))
+        return list(internal())
