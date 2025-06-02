@@ -7,6 +7,9 @@ class Solution:
             if target == 0:
                 yield tuple(current)
                 return
+            
+            if target < 0:
+                return
 
             for index in range(start_index, max_candidates):
                 candidate = candidates[index]
