@@ -9,10 +9,12 @@ class Solution:
                 return
 
             for index in range(start_index, max_nums):
-                if index > 0 or nums[index] != nums[index - 1]:
-                    current.append(nums[index])
-                    yield from internal(index + 1)
-                    current.pop()
+                if index > start_index and nums[index] == nums[index - 1]:
+                    continue
+
+                current.append(nums[index])
+                yield from internal(index + 1)
+                current.pop()
 
         nums.sort()
         return list(internal(0))
