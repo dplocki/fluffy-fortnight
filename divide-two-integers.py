@@ -9,15 +9,19 @@ class Solution:
         dividend = abs(dividend)
         divisor = abs(divisor)
 
-        if divisor > 1:
-            while True:
+        while True:
+            if divisor == 1:
+                result = dividend
+                break
+            if divisor & 1 == 0:
+                divisor >>= 1
+                dividend >>= 1
+            else:
                 dividend -= divisor
                 if dividend >= 0:
                     result += 1
                 else:
                     break
-        else:
-            result = dividend
 
         if dividend_sign != divisor_sign:
             result = -result
