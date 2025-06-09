@@ -4,27 +4,19 @@ class Solution:
 
     def divide(self, dividend: int, divisor: int) -> int:
         result = 0
-        dividend_sign = 1 if dividend > 0 else -1
-        divisor_sign = 1 if divisor > 0 else -1
-        dividend = abs(dividend)
-        divisor = abs(divisor)
+        negative = (dividend < 0) != (divisor < 0)
+        dividend, divisor = abs(dividend), abs(divisor)
 
-        while True:
-            if divisor == 1:
-                result = dividend
-                break
-            if divisor & 1 == 0:
-                divisor >>= 1
-                dividend >>= 1
-            else:
-                dividend -= divisor
-                if dividend >= 0:
-                    result += 1
-                else:
-                    break
+        while dividend >= divisor:
+            temp = divisor
+            multiple = 1
+            while dividend >= (temp << 1):
+                temp <<= 1
+                multiple <<= 1
+            dividend -= temp
+            result += multiple
 
-        if dividend_sign != divisor_sign:
-            result = -result
+        result = -result if negative else result
 
         if result > Solution.MAX:
             result = Solution.MAX
