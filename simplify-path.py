@@ -9,8 +9,7 @@ class Solution:
             elif token == '..':
                 if result:
                     result.pop()
-                continue
-            
-            result.append(token)
+            else:
+                result.append(token)
 
         return '/' + '/'.join(result)
