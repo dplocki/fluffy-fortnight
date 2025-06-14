@@ -13,20 +13,17 @@ class Solution:
         if not root:
             return None
 
-        level = [root, None]
-        while len(level) > 1:
-            new_level = []
+        leftmost = root
+        while leftmost.left:
+            head = leftmost
+            while head:
+                head.left.next = head.right
 
-            for node, node_next in zip(level, level[1:]):
-                node.next = node_next
+                if head.next:
+                    head.right.next = head.next.left
 
-                if node.left:
-                    new_level.append(node.left)
+                head = head.next
 
-                if node.right:
-                    new_level.append(node.right)
-
-            new_level.append(None)
-            level = new_level
+            leftmost = leftmost.left
 
         return root
