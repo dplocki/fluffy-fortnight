@@ -8,7 +8,7 @@ class Solution:
                 interval = intervals.pop()
 
                 if interval[0] <= current[1]:
-                    current = (min(interval[0], current[0]), max(interval[1], current[1]))
+                    current = (current[0], max(interval[1], current[1]))
                 else:
                     yield current
                     current = interval
