@@ -4,10 +4,7 @@ class Solution:
         the_best = 0
 
         for price in prices:
-            tmp = price - the_lowest
-            if tmp > the_best:
-                the_best = tmp
-
+            the_best = max(the_best, price - the_lowest)
             the_lowest = min(the_lowest, price)
 
         return the_best
