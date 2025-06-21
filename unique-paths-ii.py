@@ -5,9 +5,7 @@ class Solution:
        
         for row_index, row in enumerate(obstacleGrid):
             for column_index, obstacle in enumerate(row):
-                if obstacle == 1:
-                    dp[row_index, column_index] = 0
-                else:
-                    dp[row_index, column_index] = dp[row_index - 1, column_index] + dp[row_index, column_index - 1]
+                dp[row_index, column_index] = 0 if obstacle == 1 \
+                    else dp[row_index - 1, column_index] + dp[row_index, column_index - 1]
 
         return dp[len(obstacleGrid) - 1, len(obstacleGrid[0]) - 1]
