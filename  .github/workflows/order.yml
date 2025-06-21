@@ -1,0 +1,35 @@
+name: Organize Python Files
+
+on:
+  workflow_dispatch:
+
+jobs:
+  organize-files:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Organize Python files
+        run: |
+          for file in *.py; do
+            [ -f "$file" ] || continue
+
+            initial=$(echo "$file" | cut -c1 | tr '[:upper:]' '[:lower:]')
+
+            echo "Moving $file to $initial/"
+
+            mkdir -p "$initial"
+            mv "$file" "$initial/"
+          done
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: '🐍 Organize Python files by initial letter'
+          commit_author: 'GitHub Action Bot <action@github.com>'
