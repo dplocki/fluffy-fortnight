@@ -6,8 +6,7 @@ class Solution:
         while left < right:
             middle = (left + right) >> 1
 
-            row = middle // columns_count
-            column = middle % columns_count
+            row, column = divmod(middle, columns_count)
 
             if matrix[row][column] >= target:
                 right = middle
