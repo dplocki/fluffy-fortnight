@@ -10,11 +10,11 @@ class Solution:
         def internal(columns):
             row = len(columns)
             if row == n:
-                yield columns
+                yield 1
                 return
 
             for column in range(n):
                 if can_queen_be_place(row, columns, column):
                     yield from internal(columns + [column])
 
-        return sum(1 for solution in internal([]))
+        return sum(internal([]))
