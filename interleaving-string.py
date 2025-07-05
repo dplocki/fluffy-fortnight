@@ -1,20 +1,19 @@
 class Solution:
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
-        max_s1, max_s2, max_s3 = len(s1), len(s2), len(s3)
-        if max_s1 + max_s2 != max_s3:
+        s1_len, s2_len = len(s1), len(s2)
+        if s1_len + s2_len != len(s3):
             return False
 
-        propositions = deque([(0, 0)])
-        while propositions:
-            first, second = propositions.popleft()
+        dp = [False] * (s2_len + 1)
+        dp[0] = True
 
-            if first + second == max_s3:
-                return True
+        for s2_index in range(1, s2_len + 1):
+            dp[s2_index] = dp[s2_index - 1] and s2[s2_index - 1] == s3[s2_index - 1]
 
-            if first < max_s1 and s1[first] == s3[first + second]:
-                propositions.append((first + 1, second))
+        for s1_index in range(1, s1_len + 1):
+            dp[0] = dp[0] and s1[s1_index - 1] == s3[s1_index - 1]
+            for s2_index in range(1, s2_len + 1):
+                dp[s2_index] = (dp[s2_index] and s1[s1_index - 1] == s3[s1_index + s2_index - 1]) or \
+                    (dp[s2_index - 1] and s2[s2_index - 1] == s3[s1_index + s2_index - 1])
 
-            if second < max_s2 and s2[second] == s3[first + second]:
-                propositions.append((first, second + 1))
-        
-        return False
+        return dp[s2_len]
