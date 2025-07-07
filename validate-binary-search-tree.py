@@ -12,18 +12,13 @@ class Solution:
         if not node:
             return True
 
-        if minimum and node.val <= minimum:
-            return False
-        
-        if maximum and node.val >= maximum:
+        if (minimum and node.val <= minimum) or (maximum and node.val >= maximum):
             return False
 
-        if node.left:
-            if node.left.val > node.val or not self.is_valid_binary_node(node.left, minimum, node.val):
-                return False
+        if node.left and (node.left.val > node.val or not self.is_valid_binary_node(node.left, minimum, node.val)):
+            return False
 
-        if node.right:
-            if node.right.val < node.val or not self.is_valid_binary_node(node.right, node.val, maximum):
-                return False
+        if node.right and (node.right.val < node.val or not self.is_valid_binary_node(node.right, node.val, maximum)):
+            return False
 
         return True
