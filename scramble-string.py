@@ -9,10 +9,10 @@ class Solution:
             return False
 
         for i in range(1, n):
-            if self.isScramble(s1[0:i], s2[0:i]) and self.isScramble(s1[i:], s2[i:]):
+            if self.isScramble(s1[:i], s2[:i]) and self.isScramble(s1[i:], s2[i:]):
                 return True
 
-            if self.isScramble(s1[0:i], s2[n - i:]) and self.isScramble(s1[i:], s2[0:n - i]):
+            if self.isScramble(s1[:i], s2[-i:]) and self.isScramble(s1[i:], s2[:-i]):
                 return True
 
         return False
