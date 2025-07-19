@@ -6,27 +6,18 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        def is_correct(digits):
-            seen = set()
-            for item in digits:
-                if item == '.':
+        rows = [set() for _ in range(9)]
+        columns = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+
+        for r in range(Solution.SIDE_SIZE):
+            for c in range(Solution.SIDE_SIZE):
+                if board[r][c] == '.':
                     continue
 
-                if item in seen:
-                    return False
-
-                seen.add(item)
-
-            return True
-
-        def check_element(row: int, column: int) -> bool:
-            return is_correct(board[row]) and \
-                is_correct(board[i][column] for i in range(Solution.SIDE_SIZE)) and \
-                is_correct(
-                    board[(row // 3) * 3 + r][(column // 3) * 3 + c]
-                    for c in range(3)
-                    for r in range(3)
-                )
+                rows[r].add(board[r][c])
+                columns[c].add(board[r][c])
+                boxes[(r // 3) * 3 + (c // 3)].add(board[r][c])
 
         def internal(index: int) -> bool:
             if index == Solution.ALL_DIGITS:
@@ -37,10 +28,21 @@ class Solution:
                 return internal(index + 1)
 
             for c in range(1, 10):
-                board[row][column] = str(c)
+                digit = str(c)
+                if digit in rows[row] or digit in columns[column] or digit in boxes[(row // 3) * 3 + (column // 3)]:
+                    continue
 
-                if check_element(row, column) and internal(index + 1):
+                rows[row].add(digit)
+                columns[column].add(digit)
+                boxes[(row // 3) * 3 + (column // 3)].add(digit)
+
+                board[row][column] = digit
+                if internal(index + 1):
                     return True
+
+                boxes[(row // 3) * 3 + (column // 3)].remove(digit)
+                columns[column].remove(digit)
+                rows[row].remove(digit)
 
             board[row][column] = '.'
             return False
