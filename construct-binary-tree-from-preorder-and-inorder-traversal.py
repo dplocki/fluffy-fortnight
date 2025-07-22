@@ -8,18 +8,18 @@ class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         node_values_provider = (node for node in preorder)
 
-        def build_node(start, end) -> Optional[TreeNode]:
+        def build_node(start: int, end: int) -> Optional[TreeNode]:
             if end - start == 0:
                 return None
 
             node_value = next(node_values_provider)
-            node_value_index = find_index_in_range(inorder, node_value, start, end)
+            node_value_index = self.find_index_in_range(inorder, node_value, start, end)
 
             return TreeNode(node_value,
                 build_node(start, node_value_index),
                 build_node(node_value_index + 1, end))
 
-        def find_index_in_range(collection, target, start, end):
-            return next((i for i in range(start, end) if collection[i] == target))
-
         return build_node(0, len(inorder))
+
+    def find_index_in_range(self, collection: List[int], target: int, start: int, end: int):
+        return next((i for i in range(start, end) if collection[i] == target))
