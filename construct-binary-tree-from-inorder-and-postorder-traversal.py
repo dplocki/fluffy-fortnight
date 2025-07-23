@@ -15,12 +15,11 @@ class Solution:
             if not postorder:
                 return None
 
-            root_value = postorder[-1]
-            index = find_from_index(inorder, root_value, start)
+            index = find_from_index(inorder, postorder[-1], start)
             if index == None:
                 return None
-            
-            value = postorder.pop()
+           
+            root_value = postorder.pop()
             right_node = build_node(index)
 
             return TreeNode(
