@@ -12,9 +12,6 @@ class Solution:
         if not root:
             return None
 
-        if not root.left and not root.right:
-            return root
-
         first_left = root.left
         first_right = root.right
         last_left = self.flatten(first_left)
