@@ -3,7 +3,7 @@ class Solution:
         numbers = set(nums)
         result = 0
 
-        for number in nums:
+        for number in numbers:
             if number - 1 in numbers:
                 continue
 
