@@ -1,13 +1,12 @@
 class Solution:
     def numOfUnplacedFruits(self, fruits: List[int], baskets: List[int]) -> int:
         result = 0
-        used = set()
 
-        for f in fruits:
-            index = next((i for i, b in enumerate(baskets) if i not in used and b >= f), None)
+        for fruit in fruits:
+            index = next((i for i, b in enumerate(baskets) if b >= fruit), None)
             if index == None:
                 result += 1
             else:
-                used.add(index)
+                baskets[index] = 0
 
         return result
