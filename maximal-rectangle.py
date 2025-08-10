@@ -29,8 +29,7 @@ class Solution:
 
             stack.append(index)
 
-        max_area = 0
-        for index, height in enumerate(heights):
-            max_area = max(max_area, height * (right_indexes[index] - left_indexes[index] - 1))
-
-        return max_area
+        return max(
+            height * (right_indexes[index] - left_indexes[index] - 1)
+            for index, height in enumerate(heights)
+        )
