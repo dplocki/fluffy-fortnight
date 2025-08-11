@@ -1,12 +1,7 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         s_length = len(s)
-        is_palindrom = { (i, i):True for i in range(s_length) }
-
-        for start in reversed(range(s_length)):
-            for end in range(start + 1, s_length):
-                is_palindrom[start, end] = s[start] == s[end] and is_palindrom.get((start + 1, end - 1), True)
-        
+        is_palindrom = self.build_is_palindrom(s_length, s)
         current_partitioning = []
 
         def internal(start: int):
@@ -23,3 +18,12 @@ class Solution:
                 current_partitioning.pop()
 
         return list(internal(0))
+
+    def build_is_palindrom(self, s_length: int, s: str):
+        result = { (i, i):True for i in range(s_length) }
+
+        for start in reversed(range(s_length)):
+            for end in range(start + 1, s_length):
+                result[start, end] = s[start] == s[end] and result.get((start + 1, end - 1), True)
+
+        return result
