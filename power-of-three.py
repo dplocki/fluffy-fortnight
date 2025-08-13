@@ -3,4 +3,5 @@ class Solution:
         if n <= 0:
             return False
 
-        return 3 ** round(math.log(n, 3)) == n
+        # The maxium in given n-range: 3 ** 19
+        return 1162261467 % n == 0
