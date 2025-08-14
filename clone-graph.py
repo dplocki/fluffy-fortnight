@@ -10,10 +10,10 @@ class Solution:
         if not node:
             return None
 
-        cache = {}
-
-        for current in self.traverse(node):
-            cache[current.val] = Node(current.val)
+        cache = {
+            current.val: Node(current.val)
+            for current in self.traverse(node)
+        }
 
         for current in self.traverse(node):
             copy_current = cache[current.val]
