@@ -2,14 +2,10 @@ class Solution:
     OPERATIONS = [operator.add, operator.sub, operator.mul]
 
     def judgePoint24(self, cards: List[int]) -> bool:
-        for hand in permutations(cards):
-            if self.is_hand_gives_24(hand):
-                return True
+        return any(map(self.is_hand_gives_24, permutations(cards)))
 
-        return False
-    
     def is_hand_gives_24(self, hand: List[int]):
-        
+
         def is_24(value: float) -> bool:
             return abs(value - 24.0) < 1e-6
 
