@@ -1,5 +1,5 @@
 class Solution:
-    OPERATIONS = [operator.add, operator.sub, operator.mul, operator.truediv, operator.sub, lambda a, b: b - a]
+    OPERATIONS = [operator.add, operator.sub, operator.mul]
 
     def judgePoint24(self, cards: List[int]) -> bool:
         for hand in permutations(cards):
@@ -7,19 +7,27 @@ class Solution:
                 return True
 
         return False
-
+    
     def is_hand_gives_24(self, hand: List[int]):
-        def internal(index: int, current_result):
-            if index == 4:
-                return abs(current_result - 24.0) < 1e-6
+        
+        def is_24(value: float) -> bool:
+            return abs(value - 24.0) < 1e-6
 
-            for operation in Solution.OPERATIONS:
-                if internal(index + 1, operation(current_result, hand[index])):
-                    return True
+        def internal(source_a, source_b):
+            for a, b in product(source_a, source_b):
+                for operation in Solution.OPERATIONS:
+                    yield operation(a, b)
 
-            if current_result != 0 and internal(index + 1, hand[index] / current_result):
-                return True
+                if b != 0:
+                    yield a / b
 
-            return False
+        if any(map(is_24, internal(
+            internal((hand[0],), (hand[1],)),
+            internal((hand[2],), (hand[3],))
+        ))):
+            return True
 
-        return internal(1, hand[0])
+        if any(map(is_24, internal((hand[0],), internal((hand[1],), internal((hand[2],), (hand[3],)))))):
+            return True
+
+        return False
