@@ -1,23 +1,8 @@
 class Solution:
     def largestGoodInteger(self, num: str) -> str:
-        digits = list(sorted(self.find_triples(num), reverse=True))
+        result = ""
+        for a, b, c in zip(num, num[1:], num[2:]):
+            if a == b == c and a > result:
+                result = a
 
-        if not digits:
-            return ""
-
-        return digits[0] * 3
-        
-    def find_triples(self, num: str):
-        count = 0
-        digit = None
-        
-        for n in num:
-            if n == digit:
-                count += 1
-            else:
-                count = 1
-
-            digit = n
-
-            if count == 3:
-                yield digit
+        return result * 3
