@@ -1,4 +1,6 @@
 class Solution:
+    MOD = 10**9 + 7
+
     def peopleAwareOfSecret(self, n: int, delay: int, forget: int) -> int:
         secret_know_day = { 0: 1 }
 
@@ -15,4 +17,4 @@ class Solution:
 
             secret_know_day = new_secret_know_day
 
-        return sum(secret_know_day.values()) % (10**9 + 7)
+        return sum(secret_know_day.values()) % Solution.MOD
