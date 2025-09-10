@@ -1,26 +1,25 @@
 class Solution:
     def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        languages = list(map(set, languages))
+        maxium = 0
+        person_know_language = defaultdict(int)
+        person_know_language[0] = 0
+        checked = set()
 
-        def how_many_people_need_to_learn(language: int):
-            local_result = set()
-            for a, b in friendship_pair:
-                if language not in language_knowing[a]:
-                    local_result.add(a)
+        def count_person(person_id: int) -> None:
+            if person_id in checked:
+                return
 
-                if language not in language_knowing[b]:
-                    local_result.add(b)
+            checked.add(person_id)
+            nonlocal maxium
+            maxium += 1
 
-            return len(local_result)
+            for language in languages[person_id - 1]:
+                person_know_language[language] += 1
 
+        for person_a, person_b in friendships:
+            if languages[person_a - 1].isdisjoint(languages[person_b - 1]):
+                count_person(person_a)
+                count_person(person_b)
 
-        language_knowing = {
-            person: set(know_languages)
-            for person, know_languages in enumerate(languages, start=1)
-        }
-
-        friendship_pair = [(a, b) for a, b in friendships if not language_knowing[a] & language_knowing[b]]
-
-        return min(
-            how_many_people_need_to_learn(language)
-            for language in range(1, n + 1)
-        )
+        return maxium - max(person_know_language.values())
