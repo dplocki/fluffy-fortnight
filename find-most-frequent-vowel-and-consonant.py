@@ -4,10 +4,10 @@ class Solution:
     def maxFreqSum(self, s: str) -> int:
         result_vowel = 0
         result_consonat = 0
-        letters = {}
+        letters = defaultdict(int)
 
         for letter in s:
-            letters[letter] = letters.get(letter, 0) + 1
+            letters[letter] += 1
 
             if letter in Solution.VOWELS:
                 result_vowel = max(result_vowel, letters[letter])
