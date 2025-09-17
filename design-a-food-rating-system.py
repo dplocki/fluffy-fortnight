@@ -1,33 +1,26 @@
 class FoodRatings:
 
     def __init__(self, foods: List[str], cuisines: List[str], ratings: List[int]):
-        self.food_names = foods
-        self.foods = { food:index for index, food in enumerate(foods) }
-        self.cuisines = {}
-        for index, cuisine in enumerate(cuisines):
-            collection = self.cuisines.get(cuisine, [])
-            collection.append(index)
-            self.cuisines[cuisine] = collection
+        self.food_cuisine = { food:cuisines[index] for index, food in enumerate(foods) }
+        self.food_rating = {food: ratings[index] for index, food in enumerate(foods)}
+        self.cuisines = { cuisine: [] for cuisine in set(cuisines) }
 
-        self.ratings = ratings
+        for index, rate in enumerate(ratings):
+            self.changeRating(foods[index], rate)
 
     def changeRating(self, food: str, newRating: int) -> None:
-        self.ratings[self.foods[food]] = newRating
+        self.food_rating[food] = newRating
+        heappush(self.cuisines[self.food_cuisine[food]], (-newRating, food))
 
     def highestRated(self, cuisine: str) -> str:
-        result_value = 0
-        result_name = None
-
-        for index in self.cuisines[cuisine]:
-            food = self.food_names[index]
-            if self.ratings[index] > result_value:
-                result_value = self.ratings[index]
-                result_name = food
-            elif self.ratings[index] == result_value and food < result_name:
-                result_value = self.ratings[index]
-                result_name = food
-
-        return result_name
+        while self.cuisines[cuisine]:
+            rating, food = self.cuisines[cuisine][0]
+            current_rating = -self.food_rating[food]
+            
+            if rating == current_rating:
+                return food
+            
+            heappop(self.cuisines[cuisine])
 
 # Your FoodRatings object will be instantiated and called as such:
 # obj = FoodRatings(foods, cuisines, ratings)
