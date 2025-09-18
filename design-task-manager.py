@@ -16,7 +16,7 @@ class TaskManager:
         user_id, old_priority = self.tasks_db[task_id]
         self.removed_tasks.add((-old_priority, -task_id))
         self.tasks_db[task_id] = (user_id, new_priority)
-        heapq.heappush(self.task_priorities, (-new_priority, -task_id))
+        heappush(self.task_priorities, (-new_priority, -task_id))
 
     def rmv(self, task_id: int) -> None:
         user_id, old_priority = self.tasks_db[task_id]
