@@ -1,7 +1,9 @@
 class Router:
 
     def __init__(self, memoryLimit: int):
-        self.memory = deque(maxlen=memoryLimit)
+        self.memory_limit = memoryLimit
+        self.queue = deque(maxlen=memoryLimit)
+        self.memory = defaultdict(deque)
         self.ids = set()
 
     def addPacket(self, source: int, destination: int, timestamp: int) -> bool:
@@ -9,37 +11,34 @@ class Router:
         if packet in self.ids:
             return False
         
+        if len(self.queue) == self.memory_limit:
+            old_destination = self.queue[0]
+            old_source, old_timestamp = self.memory[old_destination].popleft()
+            self.ids.discard((old_source, old_destination, old_timestamp))
+
+        self.queue.append(destination)
         self.ids.add(packet)
-        self.memory.append(packet)
+        self.memory[destination].append((source, timestamp))
         return True
 
     def forwardPacket(self) -> List[int]:
-        if not self.memory:
-            return []
+        if not self.queue:
+            return tuple()
 
-        packet = self.memory.popleft()
-        self.ids.remove(packet)
-        return packet
+        destination_id = self.queue.popleft()
+        paket = self.memory[destination_id].popleft()
+        result = (paket[0], destination_id, paket[1])
+        self.ids.remove(result)
+        return result
 
     def getCount(self, destination: int, startTime: int, endTime: int) -> int:
-        size = len(self.memory)
-        low = 0
-        high = size
-
-        while low < high:
-            mid = (low + high) // 2
-            if self.memory[mid][2] < startTime:
-                low = mid + 1
-            else:
-                high = mid
-
         result = 0
-        for index in range(low, size):
-            if self.memory[index][2] > endTime:
-                break
 
-            if self.memory[index][1] == destination:
+        for source, timestamp in self.memory[destination]:
+            if startTime <= timestamp <= endTime:
                 result += 1
+            elif timestamp > endTime:
+                break
 
         return result
 
