@@ -32,15 +32,28 @@ class Router:
         return result
 
     def getCount(self, destination: int, startTime: int, endTime: int) -> int:
-        result = 0
-
-        for source, timestamp in self.memory[destination]:
-            if startTime <= timestamp <= endTime:
-                result += 1
-            elif timestamp > endTime:
-                break
-
-        return result
+        packets = self.memory[destination]
+        n = len(packets)
+       
+        left, right = 0, n
+        while left < right:
+            mid = (left + right) // 2
+            if packets[mid][1] < startTime:
+                left = mid + 1
+            else:
+                right = mid
+        start_index = left
+        
+        left, right = 0, n
+        while left < right:
+            mid = (left + right) // 2
+            if packets[mid][1] <= endTime:
+                left = mid + 1
+            else:
+                right = mid
+        end_index = left
+        
+        return end_index - start_index
 
 # Your Router object will be instantiated and called as such:
 # obj = Router(memoryLimit)
