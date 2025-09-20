@@ -1,7 +1,6 @@
 class Router:
 
     def __init__(self, memoryLimit: int):
-        self.memory_limit = memoryLimit
         self.queue = deque(maxlen=memoryLimit)
         self.memory = defaultdict(deque)
         self.ids = set()
@@ -11,7 +10,7 @@ class Router:
         if packet in self.ids:
             return False
         
-        if len(self.queue) == self.memory_limit:
+        if len(self.queue) == self.queue.maxlen:
             old_destination = self.queue[0]
             old_source, old_timestamp = self.memory[old_destination].popleft()
             self.ids.discard((old_source, old_destination, old_timestamp))
