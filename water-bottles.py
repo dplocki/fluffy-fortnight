@@ -3,8 +3,9 @@ class Solution:
         result = numBottles
         empty_bottles = 0
 
-        while numBottles + empty_bottles >= numExchange:
-            numBottles, empty_bottles = divmod(numBottles + empty_bottles, numExchange)
+        while numBottles >= numExchange:
+            numBottles, empty_bottles = divmod(numBottles, numExchange)
             result += numBottles
+            numBottles += empty_bottles
 
         return result
