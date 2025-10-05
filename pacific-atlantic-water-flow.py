@@ -20,7 +20,6 @@ class Solution:
                     if nr < 0 or nr > rows - 1 or nc < 0 or nc > columns - 1:
                         continue
 
-                    print(nr, nc, '-', r, c, '|', rows, columns)
                     if heights[nr][nc] >= heights[r][c]:
                         to_check.append((nr, nc))
 
