@@ -1,12 +1,12 @@
 class Solution:
     def maximumTotalDamage(self, power: List[int]) -> int:
         power.sort()
-        dp = { -3: 0 }
+        dp = {}
         chains = {}
         prev = -3
 
         for index, p in enumerate(power):
-            if index > 0 and power[index -1] == p:
+            if index > 0 and power[index - 1] == p:
                 dp[p] += p
                 continue
 
@@ -24,4 +24,6 @@ class Solution:
             chains[p] = prev
             prev = p
 
-        return max(dp.values())
+        return max(
+            dp.get(power[-1] - i, 0) 
+            for i in range(3))
