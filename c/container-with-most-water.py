@@ -3,16 +3,15 @@ class Solution:
         left = 0
         right = len(height) - 1
         result = 0
-        
+
         while left < right:
-            left_height = height[left]
-            right_height = height[right]
+            in_between = right - left
 
-            result = max(result, min(left_height, right_height) * (right - left))
-
-            if left_height < right_height:
-                left += 1
-            else:
+            if height[left] > height[right]:
+                result = max(result, in_between * height[right])
                 right -= 1
-
+            else:
+                result = max(result, in_between * height[left])
+                left += 1
+                
         return result
