@@ -8,8 +8,6 @@ class Solution:
 
             left = nums[i - k]
             freq[left] -= 1
-            if freq[left] == 0:
-                del freq[left]
 
             result.append(self.calculate_x_sum_from_freq(freq, x))
 
