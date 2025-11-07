@@ -48,10 +48,8 @@ class Solution:
                     k -= power_deficit
                     right_position = min(index + r, n - 1)
 
-                    start = max(0, right_position - r)
-                    end = min(right_position + r, n - 1)
-                    power_difference[start] += power_deficit
-                    power_difference[end + 1] -= power_deficit
+                    power_difference[max(0, right_position - r)] += power_deficit
+                    power_difference[min(right_position + r, n - 1) + 1] -= power_deficit
                     added_power += power_deficit
 
             return True
