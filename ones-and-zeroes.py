@@ -8,17 +8,10 @@ class Solution:
             if start >= limit:
                 return 0
 
-            result = 0
-            for index in range(start, limit):
-                zeros, ones = main_set[index]
-
-                tmp_zeros_counter = zeros_counter + zeros
-                tmp_ones_counter = ones_counter + ones
-
-                if tmp_zeros_counter > m or tmp_ones_counter > n:
-                    continue
-
-                result = max(result, 1 + internal(index + 1, tmp_zeros_counter, tmp_ones_counter))
+            result = internal(start + 1, zeros_counter, ones_counter)
+            zeros, ones = main_set[start]
+            if zeros_counter + zeros <= m and ones_counter + ones <= n:
+                result = max(result, 1 + internal(start + 1, zeros_counter + zeros, ones_counter + ones))
 
             return result
         
