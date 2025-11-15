@@ -1,25 +1,22 @@
 class Solution:
     def numberOfSubstrings(self, s: str) -> int:
-        ones_zeros = { -1: (0, 0) }
-        ones = 0
-        zeros = 0
+        n = len(s)
+        next_zero_index = [n] * (n + 1)
 
-        for index, d in enumerate(s):
-            if d == '0':
-                zeros += 1
-            else:
-                ones += 1
+        for index in range(n - 1, -1, -1):
+            next_zero_index[index] = index if s[index] == '0' else next_zero_index[index + 1]
 
-            ones_zeros[index] = (ones, zeros)
-
-        n = ones + zeros
         result = 0
-
         for start in range(n):
-            s_one, s_zero = ones_zeros[start - 1]
-            for end in range(n):
-                e_one, e_zero = ones_zeros[end]
-                if (e_one - s_one) > 0 and (e_one - s_one) >= (e_zero - s_zero) ** 2:
-                    result += 1
+            zeros_count = 1 if s[start] == '0' else 0
+            chunk_end = start
+
+            while chunk_end < n and zeros_count * zeros_count <= n:
+                ones_count = (next_zero_index[chunk_end + 1] - start) - zeros_count
+                if ones_count >= zeros_count * zeros_count:
+                    result += min(next_zero_index[chunk_end + 1] - chunk_end, ones_count - zeros_count * zeros_count + 1)
+
+                chunk_end = next_zero_index[chunk_end + 1]
+                zeros_count += 1
 
         return result
