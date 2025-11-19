@@ -3,6 +3,6 @@ class Solution:
         nums = set(nums)
 
         while original in nums:
-            original *= 2
+            original <<= 1
 
         return original
