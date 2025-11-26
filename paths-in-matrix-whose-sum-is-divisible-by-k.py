@@ -13,7 +13,7 @@ class Solution:
 
                 top = dp.get((r_index - 1, c_index), empty)
                 left = dp.get((r_index, c_index - 1), empty)
-                dp[r_index, c_index] = [0] * k
+                dp[r_index, c_index] = empty[:]
                 
                 for remainder in range(k):
                     new_remainder = (remainder + cell_value) % k
