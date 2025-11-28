@@ -1,9 +1,9 @@
 class Solution:
     def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
-        graph = defaultdict(set)
+        graph = defaultdict(list)
         for a, b in edges:
-            graph[a].add(b)
-            graph[b].add(a)
+            graph[a].append(b)
+            graph[b].append(a)
 
         def interal(node_index: int, parent_index: int) -> Tuple[int, int]:
             value = values[node_index]
@@ -19,9 +19,10 @@ class Solution:
                 result += child_group_count
                 value += child_group_value
 
-            if value % k == 0:
+            value %= k 
+            if value == 0:
                 return result + 1, 0
             
-            return result, value % k
+            return result, value
 
         return interal(0, None)[0]
