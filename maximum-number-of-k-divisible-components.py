@@ -1,17 +1,18 @@
 class Solution:
     def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+        graph = defaultdict(set)
+        for a, b in edges:
+            graph[a].add(b)
+            graph[b].add(a)
 
         def interal(node_index: int, parent_index: int) -> Tuple[int, int]:
             value = values[node_index]
-            children = chain((
+
+            children = (
                 interal(child, node_index)
-                for parent, child in edges
-                if parent == node_index and child != parent_index
-            ), (
-                interal(child, node_index)
-                for child, parent in edges
-                if parent == node_index and child != parent_index
-            ))
+                for child in graph[node_index]
+                if child != parent_index
+            )
 
             result = 0
             for child_group_count, child_group_value in children:
