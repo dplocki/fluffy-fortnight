@@ -4,18 +4,18 @@ class Solution:
         if target_reminder == 0:
             return 0
 
-        def internal():
-            current = 0
-            reminders = {0: -1}
-            for index, num in enumerate(nums):
-                current = (current + num) % p 
+        nums_len = len(nums)
+        current = 0
+        reminders = {0: -1}
+        result = nums_len
 
-                seek_reminder = (current - target_reminder + p) % p
-                if seek_reminder in reminders:
-                    length = index - reminders[seek_reminder]
-                    if length < len(nums):
-                        yield length
+        for index, num in enumerate(nums):
+            current = (current + num) % p 
 
-                reminders[current] = index
+            seek_reminder = (current - target_reminder + p) % p
+            if seek_reminder in reminders:
+                result = min(result, index - reminders[seek_reminder])
 
-        return min(internal(), default=-1)
+            reminders[current] = index
+
+        return -1 if result == nums_len else result
