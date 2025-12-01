@@ -3,7 +3,7 @@ class Solution:
         left, right = 0, sum(batteries)
 
         while left < right:
-            mid = (left + right + 1) // 2
+            mid = (left + right + 1) >> 1
 
             gain_power = sum(min(bettery, mid) for bettery in batteries)
 
