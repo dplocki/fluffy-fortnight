@@ -6,13 +6,13 @@ class Solution:
         prev = None
 
         for direction in directions:
-            if prev == 'R' and direction == 'L':
-                result += 1
-                left_obstruction = True
-                result += local_right
-                local_right = 0
 
-            elif direction == 'L':
+            if direction == 'L':
+                if prev == 'R':
+                    left_obstruction = True
+                    result += local_right
+                    local_right = 0
+
                 if left_obstruction:
                     result += 1
 
