@@ -21,11 +21,6 @@ class Solution:
 
             result[businessLine[index]].append(identifier)
 
-        for value in result.values():
-            value.sort()
-
-        return list(chain(
-            result['electronics'],
-            result['grocery'],
-            result['pharmacy'],
-            result['restaurant']))
+        return list(chain.from_iterable(
+            sorted(result[value])
+            for value in result.keys()))
