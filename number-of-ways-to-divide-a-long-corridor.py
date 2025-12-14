@@ -2,7 +2,6 @@ class Solution:
     MOD = 10**9 + 7
 
     def numberOfWays(self, corridor: str) -> int:
-        n = len(corridor)
 
         def internal(start: int) -> int:
             seats = 0
