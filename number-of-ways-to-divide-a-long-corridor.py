@@ -2,20 +2,22 @@ class Solution:
     MOD = 10**9 + 7
 
     def numberOfWays(self, corridor: str) -> int:
+        result = 1
+        seats = 0
+        last_seat = None
 
-        def internal(start: int) -> int:
-            seats = 0
-            last_seat = None
-            for index, c in enumerate(corridor[start:], start):
-                if c != 'S':
-                    continue
+        for index, c in enumerate(corridor):
+            if c != 'S':
+                continue
 
-                if seats == 2:
-                    return (index - last_seat) * internal(index)
+            if seats == 2:
+                result = (result * (index - last_seat)) % Solution.MOD
+                seats = 0
 
-                seats += 1
-                last_seat = index
+            seats += 1
+            last_seat = index
 
-            return 1 if seats == 2 else 0
+        if seats != 2:
+            return 0
 
-        return internal(0) % Solution.MOD
+        return result % Solution.MOD
