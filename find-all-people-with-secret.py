@@ -23,9 +23,10 @@ class Solution:
                     continue
 
                 visited.add(a)
+                result |= connections[a]
 
                 for b in connections[a]:
-                    waiting.append(b)
-                    result |= connections[b]
+                    if b not in visited:
+                        waiting.append(b)
 
         return list(result)
