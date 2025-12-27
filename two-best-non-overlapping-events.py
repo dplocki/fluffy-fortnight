@@ -1,9 +1,17 @@
 class Solution:
     def maxTwoEvents(self, events: List[List[int]]) -> int:
-        events.sort()
-        max_single_event = max(map(itemgetter(2), events))
+        event_times = []
+        for start, end, value in events:
+            event_times.append((start, True, value))
+            event_times.append((end + 1, False, value))
 
-        return max(max_single_event, max(
-            (a_v + b_v
-            for (a_s, a_f, a_v), (b_s, b_f, b_v) in combinations(events, 2)
-            if b_s > a_f), default=0))
+        event_times.sort()
+
+        max_result, current_max = 0, 0
+        for _, is_event_start, value in event_times:
+            if is_event_start:
+                max_result = max(max_result, value + current_max)
+            else:
+                current_max = max(current_max, value)
+    
+        return max_result
