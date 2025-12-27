@@ -1,4 +1,4 @@
 # Fluffy Fortnight
 
-My solutions for the challanges from the [leetcode.com](https://leetcode.com/).
+My solutions for challanges from the [leetcode.com](https://leetcode.com/).
 Python 3.
