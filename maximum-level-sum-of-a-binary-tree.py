@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
-        maximum_sum = root.val
+        maximum_sum_of_level = root.val
         nodes = [root]
         level = 0
         result = 1
@@ -26,8 +26,8 @@ class Solution:
             
             nodes = new_nodes
 
-            if sum_on_level > maximum_sum:
+            if sum_on_level > maximum_sum_of_level:
                 result = level
-                maximum_sum = sum_on_level
+                maximum_sum_of_level = sum_on_level
 
         return result
