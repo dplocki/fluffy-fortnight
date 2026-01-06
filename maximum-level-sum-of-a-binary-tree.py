@@ -6,22 +6,28 @@
 #         self.right = right
 class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        maximum_sum = root.val
+        nodes = [root]
+        level = 0
+        result = 1
 
-        def internal(root: Optional[TreeNode], level: int):
-            if root == None:
-                return
+        while nodes:
+            level += 1
+            sum_on_level = 0
+            new_nodes = []
 
-            yield (level, root.val)
-            yield from internal(root.left, level + 1)
-            yield from internal(root.right, level + 1)
+            for node in nodes:
+                sum_on_level += node.val
+                if node.left:
+                    new_nodes.append(node.left)
 
-        limit = 0
-        dp = {}
-        for level, value in internal(root, 1):
-            dp[level] = dp.get(level, 0) + value
-            limit = max(limit, level)
+                if node.right:
+                    new_nodes.append(node.right)
+            
+            nodes = new_nodes
 
-        maximum = max(dp.values())
-        for level in range(1, limit + 1):
-            if dp[level] == maximum:
-                return level
+            if sum_on_level > maximum_sum:
+                result = level
+                maximum_sum = sum_on_level
+
+        return result
