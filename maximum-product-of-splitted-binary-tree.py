@@ -8,22 +8,15 @@ class Solution:
     MOD = 10**9 + 7
 
     def maxProduct(self, root: Optional[TreeNode]) -> int:
+        subtree_sums = []
 
-        def internal(root: Optional[TreeNode]) -> Generator[int, int, None]:
-            if not root:
+        def internal(node):
+            if not node:
                 return 0
-
-            left = yield from internal(root.left)
-            right = yield from internal(root.right)
-
-            result = (left + root.val + right)
-            yield result
-            return result
-
-
-        substries = list(internal(root))
-        all_tree_size = substries.pop()
-
-        return max(
-            (all_tree_size - subtree_size) * subtree_size
-            for subtree_size in substries) % Solution.MOD
+            
+            subtree_sum = internal(node.left) + node.val + internal(node.right)
+            subtree_sums.append(subtree_sum)
+            return subtree_sum
+        
+        total_sum = internal(root)
+        return max(s * (total_sum - s) for s in subtree_sums) % Solution.MOD
