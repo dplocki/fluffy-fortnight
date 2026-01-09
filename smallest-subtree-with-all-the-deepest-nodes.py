@@ -21,11 +21,10 @@ class Solution:
 
             if left_deepest_level == right_deepest_level:
                 return left_deepest_level, node
-
-            if left_deepest_level > right_deepest_level:
+            elif left_deepest_level > right_deepest_level:
                 return left_deepest_level, left_node
-            else:
-                return right_deepest_level, right_node
+
+            return right_deepest_level, right_node
 
 
         return internal(0, root)[1]
