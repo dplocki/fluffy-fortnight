@@ -8,8 +8,8 @@ class Solution:
 
         return (max(common) ** 2) % Solution.MOD
 
-    def all_possible_sizes(self, fences: List[int], last: int):
-        sizes = [end - start for start, end in pairwise(sorted([1] + fences + [last]))]
+    def all_possible_sizes(self, fences: List[int], last: int) -> Generator[int, None, None]:
+        sizes = [end - start for start, end in pairwise(sorted([1, last] + fences))]
         len_sizes = len(sizes)
         for index_a in range(len_sizes):
             result = sizes[index_a]
