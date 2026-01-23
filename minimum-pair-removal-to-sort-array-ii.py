@@ -1,39 +1,57 @@
 class Solution:
     def minimumPairRemoval(self, nums: List[int]) -> int:
         n = len(nums)
+        removed = set()
+        previous_nodes = [i-1 for i in range(n)]
+        next_nodes = [i+1 for i in range(n)]
+        next_nodes[-1] = -1
+
+        pair_sums = [(nums[i] + nums[i + 1], i) for i in range(n - 1)]
+        heapq.heapify(pair_sums)
+
+        bad = sum(1 for a, b in pairwise(nums) if a > b)
         result = 0
-        next_node_map = {i:(i + 1) for i in range(n)}
 
-        while True:
-            if n == 1:
-                return result
+        while bad > 0 and n > 1:
+            pair_sum, first_index = heapq.heappop(pair_sums)
+            second_index = next_nodes[first_index]
+            if first_index in removed or second_index == -1:
+                continue
 
-            is_non_decreasing = True
-            minimal_pair_sum = float('inf')
-            minimal_pair_sum_index = -1
+            if second_index in removed or nums[first_index] + nums[second_index] != pair_sum:
+                continue
 
-            current_index = 0
-            current_node_value = nums[current_index]
+            pair_prev_index = previous_nodes[first_index]
+            pair_next_index = next_nodes[second_index]
 
-            for _ in range(n - 1):
-                next_index = next_node_map[current_index]
-                next_node_value = nums[next_index]
+            if pair_prev_index != -1 and nums[pair_prev_index] > nums[first_index]:
+                bad -= 1
 
-                if current_node_value > next_node_value:
-                    is_non_decreasing = False
+            if nums[first_index] > nums[second_index]:
+                bad -= 1
 
-                pair_sum = current_node_value + next_node_value
-                if pair_sum < minimal_pair_sum:
-                    minimal_pair_sum = pair_sum
-                    minimal_pair_sum_index = current_index
+            if pair_next_index != -1 and nums[second_index] > nums[pair_next_index]:
+                bad -= 1
 
-                current_index = next_index
-                current_node_value = next_node_value
+            removed.add(second_index)
+            nums[first_index] = pair_sum
+            next_nodes[first_index] = pair_next_index
+            if pair_next_index != -1:
+                previous_nodes[pair_next_index] = first_index
 
-            if is_non_decreasing:
-                return result
+            if pair_prev_index != -1 and nums[pair_prev_index] > pair_sum:
+                bad += 1
 
-            result += 1
-            nums[minimal_pair_sum_index] = minimal_pair_sum
-            next_node_map[minimal_pair_sum_index] = next_node_map[next_node_map[minimal_pair_sum_index]]
+            if pair_next_index != -1 and pair_sum > nums[pair_next_index]:
+                bad += 1
+
             n -= 1
+            result += 1
+
+            if pair_prev_index != -1:
+                heapq.heappush(pair_sums, (nums[pair_prev_index] + pair_sum, pair_prev_index))
+
+            if pair_next_index != -1:
+                heapq.heappush(pair_sums, (pair_sum + nums[pair_next_index], first_index))
+
+        return result
