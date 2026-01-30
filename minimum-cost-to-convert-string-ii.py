@@ -4,62 +4,42 @@ class Solution:
     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
         nodes = set(original) | set(changed)
         costs = {}
-
         for node in nodes:
-            costs[node, node] = 0
+            if node not in costs:
+                costs[node] = {}
+                
+            if node not in costs[node]:
+                costs[node][node] = 0
 
         for a, b, c in zip(original, changed, cost):
-            costs[a, b] = min(c, costs.get((a, b), Solution.INFINITY))
+            costs[a][b] = min(c, costs[a].get(b, Solution.INFINITY))
 
         for b in nodes:
             for a in nodes:
                 for c in nodes:
-                    current_cost = costs.get((a, b), Solution.INFINITY) + costs.get((b, c), Solution.INFINITY)
-                    if current_cost < costs.get((a, c), Solution.INFINITY):
-                        costs[a, c] = current_cost
+                    costs[a][c] = min(costs[a].get(b, Solution.INFINITY) + costs[b].get(c, Solution.INFINITY), costs[a].get(c, Solution.INFINITY))
 
-        nodes = {}
-        for (a, b), c in costs.items():
-            if a == b:
+        lengths = sorted(set(map(len, original)))
+        n = len(source)        
+        dp = { i:Solution.INFINITY for i in range(n + 1) }
+        dp[0] = 0
+
+        for start in range(n):
+            if dp[start] == Solution.INFINITY:
                 continue
 
-            if a not in nodes:
-                nodes[a] = {}
+            if source[start] == target[start]:
+                dp[start + 1] = min(dp[start + 1], dp[start])
+
+            for length in lengths:
+                end = start + length
+                if end > n:
+                    break
                 
-            if b not in nodes[a]:
-                nodes[a][b] = c
+                substring = source[start:end]
+                if substring not in costs:
+                    continue
 
-        visited = set()
-        to_check = [(0, source)]
-        heapify(to_check)
+                dp[end] = min(dp[end], dp[start] + costs[substring].get(target[start:end], Solution.INFINITY))
 
-        while to_check:
-            current_cost, current_string = heappop(to_check)
-            if current_string in visited:
-                continue
- 
-            if current_string == target:
-                return current_cost
-
-            visited.add(current_string)
-
-            for a in nodes.keys():
-                a_size = len(node)
-                for index in self.find_all(current_string, a):
-                    for b in nodes[a]:
-                        heappush(to_check, ( 
-                            current_cost + nodes[a][b],
-                            current_string[:index] + b + current_string[index + a_size:]
-                        ))
-                    
-        return -1
-
-    def find_all(self, string: str, substring: str) -> Generator[int, None, None]:
-        index = 0
-        while True:
-            index = string.find(substring, index)
-            if index == -1:
-                return
-
-            yield index
-            index += 1
+        return  -1 if dp[n] == Solution.INFINITY else dp[n]
