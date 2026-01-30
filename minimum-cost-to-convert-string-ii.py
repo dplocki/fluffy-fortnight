@@ -16,10 +16,18 @@ class Solution:
             costs[a][b] = min(c, costs[a].get(b, Solution.INFINITY))
             lengths.add(len(a))
 
+        lengths = sorted(lengths)
+
         for b in nodes:
             for a in nodes:
+                if costs[a].get(b, Solution.INFINITY) == Solution.INFINITY:
+                    continue 
+
                 for c in nodes:
-                    costs[a][c] = min(costs[a].get(b, Solution.INFINITY) + costs[b].get(c, Solution.INFINITY), costs[a].get(c, Solution.INFINITY))
+                    if costs[b].get(c, Solution.INFINITY) == Solution.INFINITY:
+                        continue
+
+                    costs[a][c] = min(costs[a].get(c, Solution.INFINITY), costs[a][b] + costs[b][c])
 
         n = len(source)        
         dp = { i:Solution.INFINITY for i in range(n + 1) }
@@ -35,7 +43,7 @@ class Solution:
             for length in lengths:
                 end = start + length
                 if end > n:
-                    continue
+                    break
 
                 sub_source = source[start:end]
                 sub_target = target[start:end]
