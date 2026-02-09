@@ -6,20 +6,16 @@
 #         self.right = right
 class Solution:
     def balanceBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        
-        def traverse(root):
+
+        def traverse_tree(root):
             if root == None:
                 return
 
-            yield from traverse(root.left)
+            yield from traverse_tree(root.left)
             yield root.val
-            yield from traverse(root.right)
-
-        nodes = list(traverse(root))
+            yield from traverse_tree(root.right)
 
         def build_tree(nodes, start, end):
-            if start == end:
-                return TreeNode(nodes[start])
             if start > end:
                 return None
                 
@@ -27,5 +23,6 @@ class Solution:
             left = build_tree(nodes, start, middle - 1)
             right = build_tree(nodes, middle + 1, end)
             return TreeNode(nodes[middle], left, right)
-        
+
+        nodes = list(traverse_tree(root))
         return build_tree(nodes, 0, len(nodes) - 1)
