@@ -1,7 +1,7 @@
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        a_index, b_index = len(a) -1, len(b) - 1 
-        result = ''
+        a_index, b_index = len(a) - 1, len(b) - 1 
+        result = []
         results = {
             ('0', '0', '0'): ('0', '0'),
             ('0', '0', '1'): ('1', '0'),
@@ -20,9 +20,9 @@ class Solution:
             second = b[b_index] if b_index >= 0 else '0'
 
             digit, carring = results[first, second, carring]
-            result = digit + result
+            result.append(digit)
 
             a_index -= 1
             b_index -= 1
 
-        return result
+        return ''.join(result[::-1])
