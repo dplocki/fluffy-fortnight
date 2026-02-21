@@ -1,10 +1,10 @@
 class Solution:
-    def countPrimeSetBits(self, left: int, right: int) -> int:
-        primes = set([2, 3, 5, 7, 11, 13, 17, 19])
+    PRIMES = {2, 3, 5, 7, 11, 13, 17, 19}
 
+    def countPrimeSetBits(self, left: int, right: int) -> int:
         return sum(1
             for n in range(left, right + 1)
-            if self.countSetBits(n) in primes)
+            if self.countSetBits(n) in Solution.PRIMES)
 
     def countSetBits(self, n: int) -> int:
         count = 0
