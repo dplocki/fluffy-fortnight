@@ -12,6 +12,6 @@ class Solution:
                 number_limit <<= 1
 
             result <<= digits_number
-            result += i
+            result |= i
 
         return result % Solution.MODULO
