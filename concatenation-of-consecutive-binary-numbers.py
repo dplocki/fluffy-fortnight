@@ -11,7 +11,6 @@ class Solution:
                 digits_number += 1
                 number_limit <<= 1
 
-            result <<= digits_number
-            result |= i
+            result = ((result << digits_number) | i) % Solution.MODULO
 
-        return result % Solution.MODULO
+        return result
