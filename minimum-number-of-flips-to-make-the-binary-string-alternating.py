@@ -1,18 +1,13 @@
 class Solution:
     def minFlips(self, s: str) -> int:
-        result, n = 10**6, len(s)
+        target_pattern, n = "01", len(s)
+        mismatch_count = sum(char != target_pattern[i & 1] for i, char in enumerate(s))
+        result = min(mismatch_count, n - mismatch_count)
 
-        for m in range(n - 1):
-            zero_start_odd = 0
-            for index in range(n):
-                diggit = s[(index + m) % n]
-                if index % 2 == 0:
-                    if diggit != '1':
-                        zero_start_odd += 1
-                else:
-                    if diggit == '1':
-                        zero_start_odd += 1
-            
-            result = min(result, zero_start_odd, n - zero_start_odd)
+        for i in range(n):
+            mismatch_count -= s[i] != target_pattern[i & 1]
+            mismatch_count += s[i] != target_pattern[(i + n) & 1]
 
+            result = min(result, mismatch_count, n - mismatch_count)
+      
         return result
