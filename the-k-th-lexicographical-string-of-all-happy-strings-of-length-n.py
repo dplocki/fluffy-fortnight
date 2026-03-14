@@ -18,11 +18,7 @@ class Solution:
                 case ['c', 0]: prev_letter = 'a'
                 case ['c', 1]: prev_letter = 'b'
 
-            if happy_strings_count > 0:
-                k %= happy_strings_count
-            else:
-                k = 0
-
+            k %= happy_strings_count
             result += prev_letter
 
         return result
