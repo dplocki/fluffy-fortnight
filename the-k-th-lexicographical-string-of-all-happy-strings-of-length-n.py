@@ -1,24 +1,18 @@
 class Solution:
+    LETTERS = { 'a': 'bc', 'b': 'ac', 'c': 'ab' }
+
     def getHappyString(self, n: int, k: int) -> str:
-        happy_strings_count = 2 ** (n - 1)
-        if k > 3 * happy_strings_count:
+        block_size = 2 ** (n - 1)
+        k -= 1
+        if k >= 3 * block_size:
             return ''
 
-        k -= 1
-        result = prev_letter = 'abc'[k // happy_strings_count]
-        k %= happy_strings_count
+        result = ['abc'[k // block_size]]
+        k %= block_size
 
         for _ in range(n - 1):
-            happy_strings_count >>= 1
-            match [prev_letter, k // happy_strings_count]:
-                case ['a', 0]: prev_letter = 'b'
-                case ['a', 1]: prev_letter = 'c'
-                case ['b', 0]: prev_letter = 'a'
-                case ['b', 1]: prev_letter = 'c'
-                case ['c', 0]: prev_letter = 'a'
-                case ['c', 1]: prev_letter = 'b'
+            block_size >>= 1
+            result.append(Solution.LETTERS[result[-1]][k // block_size])
+            k %= block_size
 
-            k %= happy_strings_count
-            result += prev_letter
-
-        return result
+        return ''.join(result)
