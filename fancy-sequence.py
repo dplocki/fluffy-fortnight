@@ -3,28 +3,26 @@ class Fancy:
 
     def __init__(self):
         self.n = 0
-        self.operations_number = 0
         self.numbers = []
-        self.operations = []
+        self.inc = 0
+        self.multiplayer = 1
 
     def append(self, val: int) -> None:
-        self.numbers.append((val, self.operations_number))
+        self.numbers.append((val, self.inc, self.multiplayer))
         self.n += 1
 
     def addAll(self, inc: int) -> None:
-        self.operations.append(lambda x: (x + inc) % Fancy.MOD)
-        self.operations_number += 1
+        self.inc += inc
 
     def multAll(self, m: int) -> None:
-        self.operations.append(lambda x: (x * m) % Fancy.MOD)
-        self.operations_number += 1
+        self.multiplayer = self.multiplayer * m % Fancy.MOD
+        self.inc = self.inc * m % Fancy.MOD
 
     def getIndex(self, idx: int) -> int:
         if idx >= self.n:
             return -1
+        
+        value, inc, multiplayer = self.numbers[idx]
 
-        result, operation_start = self.numbers[idx]
-        for operation_index in range(operation_start, self.operations_number):
-            result = self.operations[operation_index](result)
-
-        return result
+        ratio = self.multiplayer * pow(multiplayer, Fancy.MOD - 2, Fancy.MOD)
+        return (value * ratio + self.inc - ratio * inc) % Fancy.MOD
