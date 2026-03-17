@@ -8,13 +8,10 @@ class Solution:
                 for c, cell in enumerate(row)
             ])
 
-        result = 0
         for row in consequite_ones:
             row.sort(reverse=True)
 
-            for width, height in enumerate(row, 1):  
-                result = max(width * height, result)
-
-        return result
-
-
+        return max(
+            width * height
+            for width, height in enumerate(row, 1)
+        )
