@@ -13,5 +13,7 @@ class Solution:
 
         return max(
             width * height
+            for row in consequite_ones
             for width, height in enumerate(row, 1)
         )
+
