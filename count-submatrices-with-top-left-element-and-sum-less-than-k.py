@@ -3,7 +3,7 @@ class Solution:
         previous_row = { -1: 0 }
         result = 0
 
-        for r, row in enumerate(grid):
+        for row in grid:
             current_row = { -1: 0 }
 
             for c, cell in enumerate(row):
