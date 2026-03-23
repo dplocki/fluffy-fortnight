@@ -24,5 +24,5 @@ class Solution:
                     dp_mins[r, c] = value * max(dp_maxs.get((r - 1, c), 1), dp_maxs.get((r, c - 1), 1))
                     dp_maxs[r, c] = value * min(dp_mins.get((r - 1, c), 1), dp_mins.get((r, c - 1), 1))
 
-        result = dp_maxs[len(grid)-1, len(grid[0])-1]
+        result = dp_maxs[rows - 1, columns - 1]
         return -1 if result < 0 else result % Solution.MOD
