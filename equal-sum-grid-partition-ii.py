@@ -38,7 +38,7 @@ class Solution:
                     if is_single_column and (0 < r < end_r):
                         continue
 
-                    if 0 <= r <= end_r and 0 <= c <= end_c:
+                    if r <= end_r and c <= end_c:
                         return True
 
                 return False
@@ -63,12 +63,10 @@ class Solution:
             return False
 
 
-        for r in range(rows - 1):
-            if check_area(r, columns - 1):
-                return True
+        if any(check_area(r, columns - 1) for r in range(rows - 1)):
+            return True
     
-        for c in range(columns - 1):
-            if check_area(rows - 1, c):
-                return True
+        if any(check_area(rows - 1, c) for c in range(columns - 1)):
+            return True
         
         return False
