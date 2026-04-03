@@ -5,7 +5,7 @@ class Solution:
         walls.sort()
       
         @cache
-        def internal(robot_index: int, prev_robot_moved_right: int) -> int:
+        def internal(robot_index: int, prev_robot_shoot_right: bool) -> int:
             if robot_index < 0:
                 return 0
           
@@ -17,22 +17,22 @@ class Solution:
           
             left_wall_index = bisect_left(walls, left_boundary)
             right_wall_index = bisect_left(walls, current_positon + 1)
-            walls_covered_left = internal(robot_index - 1, 0) + right_wall_index - left_wall_index
+            walls_covered_left = internal(robot_index - 1, False) + right_wall_index - left_wall_index
           
             right_boundary = current_positon + current_distance
           
             if robot_index + 1 < n:
                 next_position, next_distance = robot_with_distances[robot_index + 1]
               
-                if prev_robot_moved_right == 0:
-                    right_boundary = min(right_boundary, next_position - next_distance - 1)
-                else:
+                if prev_robot_shoot_right:
                     right_boundary = min(right_boundary, next_position - 1)
+                else:
+                    right_boundary = min(right_boundary, next_position - next_distance - 1)
           
             left_wall_index = bisect_left(walls, current_positon)
             right_wall_index = bisect_left(walls, right_boundary + 1)
-            walls_covered_right = internal(robot_index - 1, 1) + right_wall_index - left_wall_index
+            walls_covered_right = internal(robot_index - 1, True) + right_wall_index - left_wall_index
           
             return max(walls_covered_left, walls_covered_right)
       
-        return internal(n - 1, 1)
+        return internal(n - 1, True)
