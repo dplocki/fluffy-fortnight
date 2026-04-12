@@ -4,7 +4,7 @@ class Solution:
         asci_a = ord('A')
         
         @cache
-        def distance(from_letter, to_letter):
+        def distance(from_letter: str, to_letter: str) -> int:
             if from_letter == None:
                 return 0
 
