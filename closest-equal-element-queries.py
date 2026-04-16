@@ -1,24 +1,30 @@
 class Solution:
     def solveQueries(self, nums: List[int], queries: List[int]) -> List[int]:
-        dp, n = {}, 0
+        n = len(nums)
+        n2 = n << 1
+        miniaml_distances = [n2] * n2
 
-        for index, num in enumerate(nums):
-            if num not in dp:
-                dp[num] = []
-            
-            dp[num].append(index)
-            n += 1
-        
-        def internal(query: int):
-            for num in dp.get(nums[query], []):
-                if num == query:
-                    continue 
-                
-                d = abs(num - query)
-                yield d
-                yield n - d
-        
-        return list(
-            min(internal(query), default=-1)
-            for query in queries
-        )
+        last_value = {}
+        for index in range(n2):
+            current = nums[index % n]
+
+            if current in last_value:
+                miniaml_distances[index] = min(miniaml_distances[index], index - last_value[current])
+
+            last_value[current] = index
+
+        last_value = {}
+        for index in range(n2, -1, -1):
+            current = nums[index % n]
+
+            if current in last_value:
+                miniaml_distances[index] = min(miniaml_distances[index], last_value[current] - index)
+
+            last_value[current] = index
+
+        result = []
+        for query in queries:
+            r = min(miniaml_distances[query], miniaml_distances[query + n])
+            result.append(-1 if r >= n else r)
+
+        return result
