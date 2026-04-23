@@ -8,8 +8,7 @@ class Solution:
 
             indexes[num].append(index)
 
-        result = []
-        for index, num in enumerate(nums):
-            result.append(sum(abs(index - i) for i in indexes[num]))
-
-        return result
+        return [
+            sum(abs(index - i) for i in indexes[num])
+            for index, num in enumerate(nums)
+        ]
