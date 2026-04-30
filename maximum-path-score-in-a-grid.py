@@ -1,7 +1,6 @@
 class Solution:
     def maxPathScore(self, grid: List[List[int]], k: int) -> int:
         rows, columns = len(grid), len(grid[0])
-        dp = {}
 
         @cache
         def internal(row: int, column: int, cost: int) -> int:
