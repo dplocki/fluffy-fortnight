@@ -11,4 +11,4 @@ class Solution:
 
         for row in range(size):
             for column in range(row):
-                matrix[row][column], matrix[ column][row] = matrix[column][row], matrix[row][column]
+                matrix[row][column], matrix[column][row] = matrix[column][row], matrix[row][column]
