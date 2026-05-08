@@ -39,7 +39,6 @@ class Solution:
             for prime in prime_factors(num):
                 primes[prime].append(index)
 
-        imporant_points.append(n - 1)
         to_check = deque([(0, 0)])
         visited = set()
         visited.add(0)
