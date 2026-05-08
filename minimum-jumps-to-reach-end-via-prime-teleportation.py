@@ -1,5 +1,6 @@
+@cache
 def is_prime(n: int) -> bool:
-    if n <= 1:
+    if n < 2:
         return False
 
     for i in range(2, int(n ** 0.5) + 1):
@@ -9,50 +10,54 @@ def is_prime(n: int) -> bool:
     return True
 
 
+def prime_factors_generator(num: int) -> Generator[int, None, None]:
+    p = 2
+    factors = []
+    while p * p <= num:
+        if num % p == 0:
+            yield p
+            while num % p == 0:
+                num //= p
+        p += 1
+
+    if num > 1:
+        yield num
+
+
+@cache
+def prime_factors(num: int) -> Tuple[int]:
+    return tuple(prime_factors_generator(num))
+
+
 class Solution:
     def minJumps(self, nums: List[int]) -> int:
-        primes, imporant_points, n = {}, [], 0
+        primes = defaultdict(list)
+        imporant_points, n = [], 0
 
         for index, num in enumerate(nums):
             n += 1
-            if is_prime(num):
-                primes[num] = []
-                imporant_points.append(index)
-
-        for index, num in enumerate(nums):
-            for prime in primes:
-                if num % prime == 0:
-                    primes[prime].append(index)
+            for prime in prime_factors(num):
+                primes[prime].append(index)
 
         imporant_points.append(n - 1)
-        to_check = [(0, 0)]
-        result = {}
+        to_check = deque([(0, 0)])
+        visited = set()
+        visited.add(0)
 
         while to_check:
-            current_jumps, current_index = heapq.heappop(to_check)
-            if current_jumps > n - 1:
-                continue
-
-            if current_index in result and result[current_index] < current_jumps:
-                continue 
-
-            result[current_index] = current_jumps
+            current_jumps, current_index = to_check.popleft()
             if current_index == n - 1:
                 return current_jumps
-        
-            if nums[current_index] in primes:
-                new_jumps = current_jumps + 1
-                for new_index in primes[nums[current_index]]:
-                    if new_index not in result or result[new_index] > new_jumps:
-                        heapq.heappush(to_check, (new_jumps, new_index))
 
-            for new_index in imporant_points:
-                if new_index == current_index:
-                    continue
+            for new_index in (current_index - 1, current_index + 1):
+                if 0 <= new_index < n and new_index not in visited:
+                    visited.add(new_index)
+                    to_check.append((current_jumps + 1, new_index))
 
-                new_jumps = current_jumps + abs(current_index - new_index)
-                if new_jumps > n - 1:
-                    continue
- 
-                if new_index not in result or result[new_index] > new_jumps:
-                    heapq.heappush(to_check, (new_jumps, new_index))
+            if is_prime(nums[current_index]):
+                for prime in prime_factors(nums[current_index]):
+                    while primes[prime]:
+                        new_index = primes[prime].pop()
+                        if new_index not in visited:
+                            visited.add(new_index)
+                            to_check.append((current_jumps + 1, new_index)) 
