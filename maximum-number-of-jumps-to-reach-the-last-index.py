@@ -5,10 +5,10 @@ class Solution:
 
         for i in range(n - 1):
             for j in range(i + 1, n):
-                if abs(nums[j] - nums[i]) > target:
+                if i not in dp:
                     continue
 
-                if i not in dp:
+                if abs(nums[j] - nums[i]) > target:
                     continue
 
                 dp[j] = max(dp.get(j, -1), dp[i] + 1)
