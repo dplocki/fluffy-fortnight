@@ -4,8 +4,8 @@ class Solution:
         delta = defaultdict(int)
 
         for i in range(n // 2):
-            mini = min(nums[i], nums[n -1 - i])
-            maxi = max(nums[i], nums[n -1 - i])
+            mini = min(nums[i], nums[n - 1 - i])
+            maxi = max(nums[i], nums[n - 1 - i])
 
             delta[2] +=  2
             delta[mini + 1] -= 1
