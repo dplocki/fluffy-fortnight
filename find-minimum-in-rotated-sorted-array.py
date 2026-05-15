@@ -13,9 +13,7 @@ class Solution:
             middle = left + ((right - left) >> 1)
             if nums[left] > nums[middle]:
                 right = middle
-            elif nums[middle] > nums[right]:
-                left = middle
             else:
-                raise Error('?')
+                left = middle
         
         return nums[middle]
