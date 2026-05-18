@@ -10,29 +10,39 @@ class Solution:
         for indexes in jumps.values():
             indexes.sort(reverse=True)
         
-        to_check = [(0, 0)]
+        to_check = deque([(0, 0)])
         n = len(arr)
-        results = {}
+        visited = set()
 
         while to_check:
-            current_steps, current_index = heappop(to_check)
+            current_steps, current_index = to_check.popleft()
             if current_index == n - 1:
                 return current_steps
 
-            results[current_index] = current_steps
+            visited.add(current_index)
 
-            if current_index > 0 and results.get(current_index - 1, n) > current_steps + 1:
-                heappush(to_check, (current_steps + 1, current_index - 1))
+            next_index = current_index - 1
+            if next_index >= 0 and (next_index not in visited):
+                if next_index == n - 1:
+                    return current_steps + 1
+                visited.add(next_index)
+                to_check.append((current_steps + 1, next_index))
 
-            if current_index < n - 1 and results.get(current_index + 1, n) > current_steps + 1:
-                heappush(to_check, (current_steps + 1, current_index + 1))
+            next_index = current_index + 1
+            if next_index < n and (next_index not in visited):
+                visited.add(next_index)
+                to_check.append((current_steps + 1, next_index))
 
             new_steps = current_steps + 1
-            for jump in jumps[arr[current_index]]:
-                if jump == current_index:
+            for next_index in jumps[arr[current_index]]:
+                if next_index == current_index:
                     continue
 
-                if results.get(jump, n) > new_steps:
-                    heappush(to_check, (new_steps, jump))
+                if next_index == n - 1:
+                    return new_steps
+
+                if next_index not in visited:
+                    visited.add(next_index)
+                    to_check.append((new_steps, next_index))
         
         raise Exception('that shouldn\'t be possible')
