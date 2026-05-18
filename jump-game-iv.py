@@ -45,6 +45,6 @@ class Solution:
                     visited.add(next_index)
                     to_check.append((new_steps, next_index))
 
-                jumps[arr[current_index]] = []
+            jumps[arr[current_index]] = []
         
         raise Exception('that shouldn\'t be possible')
