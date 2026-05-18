@@ -6,6 +6,9 @@ class Solution:
                 jumps[value] = []
             
             jumps[value].append(index)
+
+        for indexes in jumps.values():
+            indexes.sort(reverse=True)
         
         to_check = [(0, 0)]
         n = len(arr)
