@@ -21,7 +21,7 @@ class Solution:
 
             results[current_index] = current_steps
 
-            if current_index > 0 and results.get(current_index - 1, n) > current_steps - 1:
+            if current_index > 0 and results.get(current_index - 1, n) > current_steps + 1:
                 heappush(to_check, (current_steps + 1, current_index - 1))
 
             if current_index < n - 1 and results.get(current_index + 1, n) > current_steps + 1:
