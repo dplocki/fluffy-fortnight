@@ -1,13 +1,20 @@
 class Solution:
     def findThePrefixCommonArray(self, A: List[int], B: List[int]) -> List[int]:
-        a_numbers, b_numbers = set(), set()
-        common_count = 0
+        seen = set()
         result = []
+        count_common = 0
 
         for a, b in zip(A, B):
-            a_numbers.add(a)
-            b_numbers.add(b)
+            if a in seen:
+                count_common += 1
+            else:
+                seen.add(a)
+            
+            if b in seen:
+                count_common += 1
+            else:
+                seen.add(b)
 
-            result.append(len(a_numbers & b_numbers))
-    
+            result.append(count_common)
+
         return result
