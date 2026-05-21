@@ -1,25 +1,25 @@
 class Solution:
     def longestCommonPrefix(self, arr1: List[int], arr2: List[int]) -> int:
-        prefixes_1, prefixes_2 = set(), set()
+        prefixes = set()
 
         for num in arr1:
             while num > 0:
-                if num in prefixes_1:
+                if num in prefixes:
                     break
 
-                prefixes_1.add(num)
+                prefixes.add(num)
                 num //= 10
 
+        the_longest_prefix = 0
         for num in arr2:
-            while num > 0:
-                if num in prefixes_2:
+            while num > the_longest_prefix:
+                if num in prefixes:
+                    the_longest_prefix = num
                     break
-                    
-                prefixes_2.add(num)
+            
                 num //= 10
-
-        prefixes = prefixes_1 & prefixes_2
-        if not prefixes:
+        
+        if the_longest_prefix == 0:
             return 0
 
-        return len(str(max(prefixes)))
+        return len(str(the_longest_prefix))
