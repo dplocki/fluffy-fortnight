@@ -3,9 +3,12 @@ class Solution:
         breaks = 1
 
         for a, b in chain(pairwise(nums), ((nums[-1], nums[0]),)):
-            if a > b:
-                if breaks == 0:
-                    return False
-                breaks -= 1
+            if a <= b:
+                continue
+
+            if breaks == 0:
+                return False
+
+            breaks -= 1
 
         return True    
