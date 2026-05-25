@@ -1,20 +1,16 @@
 class Solution:
     def canReach(self, s: str, minJump: int, maxJump: int) -> bool:
-        end = len(s) - 1
-        to_check = deque([0])
+        n = len(s)
+        dp = { 0: True }
+        options = 0
 
-        while to_check:
-            start_index = to_check.popleft()
-            if start_index == end:
-                return True
+        for current_index in range(minJump, n):
+            if dp.get(current_index - minJump, False):
+                options += 1
 
-            for j in range(start_index + minJump, start_index + maxJump + 1):
-                if j > end:
-                    break
+            if dp.get(current_index - maxJump - 1, False):
+                options -= 1
 
-                if s[j] != '0':
-                    continue
+            dp[current_index] = options > 0 and s[current_index] == '0'
 
-                to_check.append(j)
-
-        return False
+        return dp.get(current_index, False)
