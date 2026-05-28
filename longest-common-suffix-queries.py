@@ -1,7 +1,6 @@
 class Solution:
     def stringIndices(self, wordsContainer: List[str], wordsQuery: List[str]) -> List[int]:
         trie = { '<': None }
-        lengths = {}
 
         for index, word in enumerate(wordsContainer):
             tmp = trie
@@ -14,7 +13,6 @@ class Solution:
 
             current_word_len = len(word)
 
-            tmp['^'] = index
             while tmp != None:
                 if '?' in tmp:
                     if current_word_len >= tmp['?']:
@@ -27,7 +25,6 @@ class Solution:
                     tmp['='] = index
 
                 tmp = tmp['<']
-
 
         result = []
         for query in wordsQuery:
