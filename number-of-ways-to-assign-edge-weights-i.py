@@ -26,4 +26,4 @@ class Solution:
 
                 to_check.append((new_node, new_deep))
 
-        return (2 ** (max_depth - 1)) % MOD
+        return pow(2, max_depth - 1, MOD)
