@@ -7,19 +7,16 @@ class Solution:
     def pairSum(self, head: Optional[ListNode]) -> int:
         hare = head
         turtle = head
+        stack = []
+
         while hare is not None:
+            stack.append(turtle.val)
             turtle = turtle.next
             hare = hare.next.next
 
-        stack = []
-        while turtle is not None:
-            stack.append(turtle.val)
-            turtle = turtle.next
-
         result = 0
-        turtle = head 
-        while stack:
+        while turtle:
             result = max(result, stack.pop() + turtle.val)
-            turtle = turtle.next 
+            turtle = turtle.next
 
         return result
