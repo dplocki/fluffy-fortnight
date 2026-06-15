@@ -11,7 +11,7 @@ class Solution:
         turtle = head
         hare = head.next.next
 
-        while hare != None and hare.next != None:
+        while hare and hare.next:
             turtle = turtle.next
             hare = hare.next.next
 
