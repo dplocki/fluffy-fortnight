@@ -23,10 +23,9 @@ class Solution:
             elif operation == '*':
                 string_size += 1
             elif operation == '#':
-                if k + 1 > (string_size + 1) // 2:
-                    k -= string_size // 2
-
-                string_size = (string_size + 1) // 2
+                string_size = string_size // 2
+                if k >= string_size:
+                    k -= string_size
             else:
                 if k + 1 == string_size:
                     return operation
