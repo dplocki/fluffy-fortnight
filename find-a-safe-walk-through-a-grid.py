@@ -11,6 +11,9 @@ class Solution:
             if current_row == n - 1 and current_column == m - 1:
                 return True
 
+            if (current_row, current_column) in visited and visited[current_row, current_column] > current_health:
+                continue
+
             visited[current_row, current_column] = current_health
 
             for drow, dcolumn in DIR:
