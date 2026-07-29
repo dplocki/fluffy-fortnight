@@ -1,11 +1,13 @@
-def permutations_count(counts: Counter[str]) -> int:
-    n = sum(counts.values())
-    denom = 1
+def _binom_mul_capped(res: int, total: int, add: int, cap: int) -> Tuple[int, bool]:
+    if add == 0 or total == 0:
+        return res, False
 
-    for c in counts.values():
-        denom *= factorial(c)
-
-    return factorial(n) // denom
+    bigger, smaller = (total, add) if total > add else (add, total)
+    for i in range(1, smaller + 1):
+        res = res * (bigger + i) // i
+        if res > cap:
+            return res, True
+    return res, False
 
 
 def kth_permutation_with_repeats(letters: List[str], k: int) -> Generator[str, None, None]:
@@ -13,34 +15,30 @@ def kth_permutation_with_repeats(letters: List[str], k: int) -> Generator[str, N
     unique_sorted = sorted(counts.keys())
     n = len(letters)
 
-    fact = [1] * (n + 1)
-    for i in range(1, n + 1):
-        fact[i] = fact[i - 1] * i
-
-    denom = 1
-    for c in counts.values():
-        denom *= fact[c]
-
-    total = n
-
     for _ in range(n):
         for ch in unique_sorted:
             c = counts[ch]
             if c == 0:
                 continue
 
-            new_denom = denom // c
-            remaining_after = total - 1
-            block = fact[remaining_after] // new_denom
+            counts[ch] -= 1
 
-            if k < block:
-                counts[ch] -= 1
-                denom = new_denom
-                total -= 1
+            res, total, exceeded = 1, 0, False
+            for other in unique_sorted:
+                cc = counts[other]
+                if cc == 0:
+                    continue
+                res, exceeded = _binom_mul_capped(res, total, cc, k)
+                total += cc
+                if exceeded:
+                    break
+
+            if exceeded or res > k:
                 yield ch
                 break
             else:
-                k -= block
+                k -= res
+                counts[ch] += 1
 
 
 class Solution:        
