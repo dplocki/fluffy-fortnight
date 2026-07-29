@@ -7,23 +7,41 @@ def permutations_count(counts: Counter[str]) -> int:
 
     return factorial(n) // denom
 
+
 def kth_permutation_with_repeats(letters: List[str], k: int) -> Generator[str, None, None]:
     counts = Counter(letters)
     unique_sorted = sorted(counts.keys())
     n = len(letters)
-    
+
+    fact = [1] * (n + 1)
+    for i in range(1, n + 1):
+        fact[i] = fact[i - 1] * i
+
+    denom = 1
+    for c in counts.values():
+        denom *= fact[c]
+
+    total = n
+
     for _ in range(n):
         for ch in unique_sorted:
-            if counts[ch] == 0:
+            c = counts[ch]
+            if c == 0:
                 continue
-            counts[ch] -= 1
-            block = permutations_count(counts) if sum(counts.values()) > 0 else 1
+
+            new_denom = denom // c
+            remaining_after = total - 1
+            block = fact[remaining_after] // new_denom
+
             if k < block:
+                counts[ch] -= 1
+                denom = new_denom
+                total -= 1
                 yield ch
                 break
             else:
                 k -= block
-                counts[ch] += 1
+
 
 class Solution:        
     def smallestPalindrome(self, s: str, k: int) -> str:
