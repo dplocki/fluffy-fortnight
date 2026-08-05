@@ -1,28 +1,22 @@
 class Solution:
     def remainingMethods(self, n: int, k: int, invocations: List[List[int]]) -> List[int]:
-        not_affected = set(range(n))
-        invoke = defaultdict(set)
-        being_invoked = defaultdict(set)
-
+        invoke = defaultdict(list)
         for a, b in invocations:
-            invoke[a].add(b)
-            being_invoked[b].add(a)
+            invoke[a].append(b)
 
-        result = set()
+        to_remove = [False] * n
+        to_remove[k] = True
         to_check = [k]
         while to_check:
             method = to_check.pop()
-            if method in result:
-                continue
 
-            result.add(method)
-            not_affected.remove(method)
-            to_check.extend(invoke[method] - result)
+            for m in invoke[method]:
+                if not to_remove[m]:
+                    to_remove[m] = True
+                    to_check.append(m)
 
-        if not not_affected:
-            return []
+        for a, b in invocations:
+            if to_remove[b] and not to_remove[a]:
+                return list(range(n))
 
-        if all(not (being_invoked[method] - result) for method in result):
-            return list(not_affected)
-
-        return list(range(n))
+        return [m for m in range(n) if not to_remove[m]]
