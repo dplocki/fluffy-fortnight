@@ -1,34 +1,38 @@
 class Solution:
     def lexGreaterPermutation(self, s: str, target: str) -> str:
-        n = len(s)
-        sorted_letters = ''.join(sorted(s))
-        if sorted_letters[::-1] == target:
-            return ''
+        frequesies = defaultdict(int)
 
-        used_letters = [False] * n
-        result = []
+        for letter in s:
+            frequesies[letter] += 1
 
-        def internal(position: int, cannot_be_lesser: bool):
-            if position == n:
-                return ''.join(result) > target
+        for letter in target:
+            frequesies[letter] -= 1
 
-            for i, v in enumerate(used_letters):
-                if v:
+        for index in range(len(target) - 1, -1, -1):
+            frequesies[target[index]] += 1
+
+            if any(x < 0 for x in frequesies.values()):
+                continue
+
+            next_letter = None
+            for candidate in string.ascii_lowercase[ord(target[index]) - ord('a') + 1:]:
+                if not frequesies[candidate]:
                     continue
 
-                if cannot_be_lesser and sorted_letters[i] < target[position]:
-                    continue
+                next_letter = candidate
+                break
 
-                used_letters[i] = True
-                result.append(sorted_letters[i])
+            if next_letter == None:
+                continue
 
-                if internal(position + 1, cannot_be_lesser and sorted_letters[i] <= target[position]):
-                    return True
+            frequesies[next_letter] -= 1
 
-                result.pop()
-                used_letters[i] = False
+            result = list(target[:index])
+            result.append(next_letter)
 
-            return False
+            for letter in string.ascii_lowercase:
+                result.extend(letter * frequesies[letter])
 
-        internal(0, True)
-        return ''.join(result)
+            return ''.join(result)
+
+        return ''
