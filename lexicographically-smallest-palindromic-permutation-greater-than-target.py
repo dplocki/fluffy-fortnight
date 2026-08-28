@@ -38,16 +38,16 @@ class Solution:
                 if cannot_be_lesser and letter < target[position]:
                     continue
 
-                how_much_letter = 1 if cannot_be_lesser else frequencies[letter]
-                palindrome.extend(letter * how_much_letter)
-                frequencies[letter] -= how_much_letter
+                how_much_letters = 1 if cannot_be_lesser else frequencies[letter]
+                palindrome.extend(letter * how_much_letters)
+                frequencies[letter] -= how_much_letters
 
-                result = internal(position + how_much_letter, cannot_be_lesser and letter <= target[position])
+                result = internal(position + how_much_letters, cannot_be_lesser and letter <= target[position])
                 if result:
                     return result
 
-                del palindrome[-how_much_letter:]
-                frequencies[letter] += how_much_letter
+                del palindrome[-how_much_letters:]
+                frequencies[letter] += how_much_letters
 
             return ''
 
