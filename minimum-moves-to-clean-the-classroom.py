@@ -26,26 +26,18 @@ class Solution:
             all_litters |= litter_mask
             litter_mask <<= 1
 
-        visited = set()
+        best_energy = { (start[0], start[1], 0): energy }
         to_check = deque(((start[0], start[1], 0, energy, 0), ))
 
         while to_check:
-            row, column, litter_mask, current_energy, steps = to_check.popleft()
-            if (row, column, litter_mask, current_energy) in visited:
-                continue
-
-            if (row, column) in litters:
-                litter_mask |= litters[row, column]
-            
-            visited.add((row, column, litter_mask, current_energy))
+            row, column, litter_mask, current_energy, current_steps = to_check.popleft()
 
             if litter_mask == all_litters:
-                return steps
+                return current_steps
 
             if current_energy == 0:
                 continue
 
-            steps += 1
             for dr, dc in DIRS:
                 new_row = row + dr
                 if 0 > new_row or new_row >= rows:
@@ -59,9 +51,10 @@ class Solution:
                     continue
 
                 new_energy = energy if classroom[new_row][new_column] == 'R' else current_energy - 1
-                if new_energy < 0:
-                    continue
+                new_mask = litter_mask | litters.get((new_row, new_column), 0)
 
-                to_check.append((new_row, new_column, litter_mask, new_energy, steps))
+                if new_energy > best_energy.get((new_row, new_column, new_mask), -1):
+                    best_energy[new_row, new_column, new_mask] = new_energy
+                    to_check.append((new_row, new_column, new_mask, new_energy, current_steps + 1))
 
         return -1
