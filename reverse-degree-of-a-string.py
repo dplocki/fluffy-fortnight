@@ -1,7 +1,7 @@
 class Solution:
     def reverseDegree(self, s: str) -> int:
-        A = ord('a')
+        prefix = ord('a') + 26
         return sum(
-            (26 - ord(letter) + A) * (index + 1)
+            (prefix - ord(letter)) * (index + 1)
             for index, letter in enumerate(s)
         )
