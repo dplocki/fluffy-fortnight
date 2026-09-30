@@ -1,12 +1,20 @@
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
-        t_length = len(t)
-        dp = defaultdict(int)
-        dp[0] = 1
+        s_len, t_len = len(s), len(t)
 
-        for character in s:
-            for t_index in range(t_length, 0, -1):
-                if character == t[t_index - 1]:
-                    dp[t_index] += dp[t_index - 1]
 
-        return dp[t_length]
+        @cache
+        def internal(s_index: int, t_index: int) -> int:
+            if t_index == t_len:
+                return 1
+
+            if s_index == s_len:
+                return 0
+
+            skip = internal(s_index + 1, t_index)
+            not_skip = 0 if s[s_index] != t[t_index] else internal(s_index + 1, t_index + 1)
+
+            return not_skip + skip
+
+
+        return internal(0, 0)
