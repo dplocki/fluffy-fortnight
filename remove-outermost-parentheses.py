@@ -1,7 +1,6 @@
 class Solution:
     def removeOuterParentheses(self, s: str) -> str:
-        level = 0
-        result = []
+        level, result = 0, []
 
         for character in s:
             if character == '(':
