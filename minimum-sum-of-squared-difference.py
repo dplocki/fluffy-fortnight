@@ -14,5 +14,6 @@ class Solution:
             operations -= change
             counter[max_difference] -= change
             counter[max_difference - 1] += change
+            max_difference -= 1
 
         return sum(v * k * k for k, v in counter.items())
