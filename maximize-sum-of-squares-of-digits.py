@@ -1,6 +1,7 @@
 class Solution:
     def maxSumOfSquares(self, num: int, sum: int) -> str:
         
+        @cache
         def internal(result: str, num: int, sum: int):
             if sum < 0:
                 return None
