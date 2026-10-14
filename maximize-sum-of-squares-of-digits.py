@@ -1,20 +1,12 @@
 class Solution:
     def maxSumOfSquares(self, num: int, sum: int) -> str:
-        
-        @cache
-        def internal(result: str, num: int, sum: int):
-            if sum < 0:
-                return None
+        if sum > 9 * num:
+            return ''
 
-            if num == 0:
-                return result if sum == 0 else None
+        number_of_9, rest = divmod(sum, 9)
+        result = '9' * number_of_9
+        if rest > 0:
+            result += str(rest)
 
-            for d in range(9, -1, -1):
-                local_result = internal(result, num - 1, sum - d)
-                if local_result is not None:
-                    return str(d) + local_result
-
-            return None
-
-
-        return internal('', num, sum) or ''
+        result += '0' * (num - len(result))
+        return result
