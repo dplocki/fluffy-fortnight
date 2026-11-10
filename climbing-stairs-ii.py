@@ -1,19 +1,7 @@
 class Solution:
     def climbStairs(self, n: int, costs: List[int]) -> int:
-        
-        @cache
-        def get_minimum_cost(stair: int) -> int:
-            if stair < 0:
-                return inf
-            
-            if stair == 0:
-                return 0
-            
-            return min(
-                get_minimum_cost(stair - 3) + 9,
-                get_minimum_cost(stair - 2) + 4,
-                get_minimum_cost(stair - 1) + 1,
-            ) + costs[stair - 1]
+        a = b = c = 0
+        for i in range(n):
+            a, b, c = b, c, min(a + 9, b + 4, c + 1) + costs[i]
 
-
-        return get_minimum_cost(n)
+        return c
