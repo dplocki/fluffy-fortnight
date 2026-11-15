@@ -5,14 +5,14 @@ class Solution:
     def numOfSubarrays(self, arr: list[int]) -> int:
         n = len(arr)
         count = 0
+        dp = [[0, 0], [0, 0]]
 
-        for start_index in range(n):
-            current_sum = 0
+        for index in range(n):
+            current = index & 1
+            parity = arr[index] & 1
+            dp[parity][current] = (1 + dp[0][1 - current]) % MOD
+            dp[1 - parity][current] = dp[1][1 - current] % MOD
 
-            for end_index in range(start_index, n):
-                current_sum += arr[end_index] & 1
+            count = (count + dp[1][current]) % MOD
 
-                if current_sum & 1 != 0:
-                    count += 1
-
-        return int(count % MOD)
+        return count
