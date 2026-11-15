@@ -3,16 +3,19 @@ MOD = (10 ** 9) + 7
 
 class Solution:
     def numOfSubarrays(self, arr: list[int]) -> int:
-        n = len(arr)
-        count = 0
-        dp = [[0, 0], [0, 0]]
+        result = 0
+        pre_odd = 0
+        pre_even = 1
+        pre_sum = 0
 
-        for index in range(n):
-            current = index & 1
-            parity = arr[index] & 1
-            dp[parity][current] = (1 + dp[0][1 - current]) % MOD
-            dp[1 - parity][current] = dp[1][1 - current] % MOD
+        for num in arr:
+            pre_sum += num
 
-            count = (count + dp[1][current]) % MOD
+            if pre_sum & 1 == 1:
+                result += pre_even
+                pre_odd += 1
+            else:
+                result += pre_odd
+                pre_even += 1
 
-        return count
+        return result % MOD
