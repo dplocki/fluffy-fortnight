@@ -3,13 +3,11 @@ class ProductOfNumbers:
         self.prefix = [1]
 
     def add(self, num: int) -> None:
-        if num != 0:
-            if self.prefix:
-                self.prefix.append(num * self.prefix[-1])
-            else:
-                self.prefix.append(num)
-        else:
+        if num == 0:
             self.prefix = [1]
+            return
+
+        self.prefix.append(num * self.prefix[-1])
 
     def getProduct(self, k: int) -> int:
         if len(self.prefix) <= k:
